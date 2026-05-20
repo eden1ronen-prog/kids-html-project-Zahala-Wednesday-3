@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <title>לוח האימוג'י המדליק</title>
+    <style>
+        body {
+            background-color: #fff4e6;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 50px;
+        }
+        .emoji-btn {
+            font-size: 60px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: transform 0.2s;
+            margin: 0 15px;
+        }
+        .emoji-btn:hover {
+            transform: scale(1.2);
+        }
+        /* כאן אנחנו יוצרים את "גלימת ההיעלמות" */
+        .message {
+            display: none; 
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>איך אתם מרגישים עכשיו?</h1>
+    
+    <!-- לכל כפתור הוספנו פקודת onclick שאומרת למחשב איזה קסם להפעיל -->
+    <button class="emoji-btn" onclick="showMood('happy')">😊</button>
+    <button class="emoji-btn" onclick="showMood('cool')">😎</button>
+    <button class="emoji-btn" onclick="showMood('star')">🤩</button>
+
+    <!-- ההודעות שיופיעו -->
+    <div id="happy" class="message" style="border: 3px solid #ffeb3b;">
+        <h2>איזה יופי! חיוך זה הכי כיף!</h2>
+    </div>
+
+    <div id="cool" class="message" style="border: 3px solid #2196f3;">
+        <h2>אתם פשוט אלופי קוד!</h2>
+    </div>
+
+    <div id="star" class="message" style="border: 3px solid #ff9800;">
+        <h2>וואו! אתם כוכבים אמיתיים!</h2>
+    </div>
+
+    <script>
+        function showMood(moodId) {
+            // 1. קודם כל, אנחנו מסתירים את כל ההודעות
+            var allMessages = document.getElementsByClassName('message');
+            for (var i = 0; i < allMessages.length; i++) {
+                allMessages[i].style.display = 'none';
+            }
+
+            // 2. עכשיו אנחנו מגלים רק את ההודעה שלחצו עליה
+            document.getElementById(moodId).style.display = 'block';
+            
+            // 3. בונוס: משנים את צבע הרקע של כל הדף בהתאם!
+            if(moodId === 'happy') document.body.style.backgroundColor = '#fff9c4';
+            if(moodId === 'cool') document.body.style.backgroundColor = '#bbdefb';
+            if(moodId === 'star') document.body.style.backgroundColor = '#ffe0b2';
+        }
+    </script>
+
+</body>
+</html>
