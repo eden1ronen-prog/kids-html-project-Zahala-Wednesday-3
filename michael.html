@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>איזה גיבור על אתה?</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    text-align:center;
+    background:#eaf6ff;
+    padding:20px;
+}
+
+#question{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 20px;
+    margin:8px;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.answer{
+    display:block;
+    margin:10px auto;
+}
+
+.heroImage{
+    width:300px;
+    border-radius:20px;
+}
+
+.powerImages{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.powerImages img{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.restart{
+    margin-top:30px;
+    font-size:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>🦸 איזה גיבור על אתה? 🦸</h1>
+
+<div id="game"></div>
+
+<script>
+
+/* =====================================================
+   אזור 1 - הגיבורים
+   הילדים יכולים לשנות שמות, תמונות וכוחות
+   ===================================================== */
+
+let heroes = {
+
+
+fire:{
+name:" איש הטלפונים📱",
+image:"https://yt3.googleusercontent.com/N666T6PjrGZOu9f4Xw65zfiCjinSz_pR8IsuMDbx7kQkzlnXPd1rI2kQ_TOjmfZ5cQQf59b6=s160-c-k-c0x00ffffff-no-rj",
+power1:"https://vintagemobile.fr/cdn/shop/articles/Le-Nokia-3310-un-succes-qui-traverse-les-generations-Vintage-Mobile-640.jpg?v=1684823970",
+power2:"https://8849tech.com/cdn/shop/files/8849_TANK_X_World_s_First_Rugged_Projector_Phone_with_1080P_Projection_Massive_Battery_main_desktop_First_picture.jpg?v=1775956265",
+description:"שולט באש, יוצר כדורי אש ומגן להבות."
+},
+
+ice:{
+name:"איש הקרח ❄️",
+image:"https://img.mako.co.il/2019/07/17/rfffrrrfhhj_i.jpg",
+power1:"https://storage.hidabroot.org/articles/49664_tumb_730X500.jpg",
+power2:"https://www.masa.co.il/wp-content/uploads/2016/02/a220fe018b1f88bc9eccc95bff090398_ice-open.jpg",
+description:"מקפיא אויבים ובונה חומות קרח."
+},
+
+lightning:{
+name:"איש הברקים ⚡",
+image:"https://www.zavit.org.il/wp-content/uploads/2025/02/pexels-philippedonn-1114690-scaled.jpg",
+power1:"https://gilefrat.com/wp-content/uploads/2020/05/lightning-750x430.jpg",
+power2:"https://www.hydrogrow.co.il/wp-content/uploads/2018/02/1_sDV1Vm_GSs77vpJD3lFvPw.jpeg",
+description:"רץ במהירות על ומזמן ברקים."
+}
+
+};
+
+
+/* =====================================================
+   אזור 2 - שאלות
+   ===================================================== */
+
+let questions = [
+
+{
+q:"איזה תחום מעניין אותך?",
+answers:[
+["תקשורת 📱","fire"],
+["מזג האויר ❄️","ice"],
+["חשמל ⚡","lightning"]
+]
+},
+
+{
+q:"איזה כוח היית רוצה לקבל?",
+answers:[
+["לזמן דמויות במשחקים","fire"],
+["להקפיא דברים","ice"],
+["לשלוט בחשמל","lightning"]
+]
+},
+
+{
+q:"איך היית נלחם בנבל?",
+answers:[
+["זורק נוקיות ואיירפודס","fire"],
+["מלכודת קרח","ice"],
+["מכת ברק","lightning"]
+]
+}
+
+];
+
+
+/* =====================================================
+   משתני משחק
+   ===================================================== */
+
+let fire;
+let ice;
+let lightning;
+let step;
+
+
+/* =====================================================
+   התחלת משחק
+   ===================================================== */
+
+function startGame(){
+
+fire = 0;
+ice = 0;
+lightning = 0;
+
+step = 0;
+
+showQuestion();
+
+}
+
+
+/* =====================================================
+   הצגת שאלה
+   ===================================================== */
+
+function showQuestion(){
+
+let q = questions[step];
+
+let html = `
+<div id="question">${q.q}</div>
+`;
+
+for(let i=0;i<q.answers.length;i++){
+
+html += `
+<button class="answer"
+onclick="choose('${q.answers[i][1]}')">
+${q.answers[i][0]}
+</button>
+`;
+
+}
+
+document.getElementById("game").innerHTML = html;
+
+}
+
+
+/* =====================================================
+   בחירת תשובה
+   ===================================================== */
+
+function choose(type){
+
+if(type=="fire"){
+fire++;
+}
+
+if(type=="ice"){
+ice++;
+}
+
+if(type=="lightning"){
+lightning++;
+}
+
+step++;
+
+if(step < questions.length){
+
+showQuestion();
+
+}
+else{
+
+showResult();
+
+}
+
+}
+
+
+/* =====================================================
+   הצגת תוצאה
+   ===================================================== */
+
+function showResult(){
+
+let winner = "fire";
+
+if(ice > fire && ice > lightning){
+winner = "ice";
+}
+
+if(lightning > fire && lightning > ice){
+winner = "lightning";
+}
+
+let hero = heroes[winner];
+
+document.getElementById("game").innerHTML =
+
+`
+<h2>🎉 הגיבור שאתה הוא:</h2>
+
+<h1>${hero.name}</h1>
+
+<img class="heroImage"
+src="${hero.image}">
+
+<h3>${hero.description}</h3>
+
+<h2>הכוחות שלך</h2>
+
+<div class="powerImages">
+
+<img src="${hero.power1}">
+
+<img src="${hero.power2}">
+
+</div>
+
+<button class="restart"
+onclick="startGame()">
+🔄 חזרה להתחלה
+</button>
+`;
+
+}
+
+
+/* =====================================================
+   התחלת המשחק בעת פתיחת הדף
+   ===================================================== */
+
+startGame();
+
+</script>
+
+</body>
+</html>
