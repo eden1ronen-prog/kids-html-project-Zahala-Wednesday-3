@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>איזה גיבור על אתה?</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    text-align:center;
+    background:#eaf6ff;
+    padding:20px;
+}
+
+#question{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 20px;
+    margin:8px;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.answer{
+    display:block;
+    margin:10px auto;
+}
+
+.heroImage{
+    width:300px;
+    border-radius:20px;
+}
+
+.powerImages{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.powerImages img{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.restart{
+    margin-top:30px;
+    font-size:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>🦸 איזה גיבור על אתה? 🦸</h1>
+
+<div id="game"></div>
+
+<script>
+
+/* =====================================================
+   אזור 1 - הגיבורים
+   הילדים יכולים לשנות שמות, תמונות וכוחות
+   ===================================================== */
+
+let heroes = {
+
+
+fire:{
+name:"איש השניצל 🥙",
+image:"https://www.schnitzelcompany-bsr.co.il/wp-content/uploads/2020/06/%D7%A9%D7%A0%D7%99%D7%A6%D7%9C-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D-%D7%A9%D7%A0%D7%99%D7%A6%D7%9C-%D7%A7%D7%95%D7%9E%D7%A4%D7%A0%D7%99-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99-%D7%90%D7%95%D7%9B%D7%9C-%D7%91%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F.jpg",
+power1:"https://www.krutit.co.il/wp-content/uploads/2025/02/%D7%A8%D7%90%D7%A9%D7%99%D7%AA.jpg",
+power2:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSppoOUtYMG83d8L6_aJMLIBKUodrEkbq6qgw&s",
+description:"אף פעם לא רעב."
+},
+
+ice:{
+name:"איש הצ'יפס🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟🍟",
+image:"https://ynet-pic1.yit.co.il/cdn-cgi/image/f=auto,w=740,q=75/picserver5/crop_images/2024/10/20/SkqZyCMgye/SkqZyCMgye_0_0_3000_2051_0_x-large.jpg",
+power1:"https://www.10dakot.co.il/wp-content/uploads/2017/03/french-fries-923687_640-2.jpg",
+power2:"https://picsum.photos/id/1039/250/250",
+description:"בעל יכולת לזרוק ציפסים מחודדים."
+},
+
+lightning:{
+name:"איש ההמבורגר⚡",
+image:"https://images1.ynet.co.il/PicServer4/2015/09/08/6433621/64335960100792640360no.jpg",
+power1:"https://tse3.mm.bing.net/th/id/OIP.fV68lLRRJm-P4l3HcKxdUAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+power2:"https://picsum.photos/id/42/250/250",
+description:"יכל להרעיב כל בן אדם."
+}
+
+};
+
+
+/* =====================================================
+   אזור 2 - שאלות
+   ===================================================== */
+
+let questions = [
+
+{
+q:"איזו חיה / ירק אתה הכי אוהב",
+answers:[
+["תרנגולת 🐔","fire"],
+["תפוא 🥔","ice"],
+["פרה 🐮","lightning"]
+]
+},
+
+{
+q:"איזה כוח היית רוצה לקבל?",
+answers:[
+["מפזר פרורי לחם","fire"],
+["לשפוך שמן רותח","ice"],
+["לאכול דשא בכמויות","lightning"]
+]
+},
+
+{
+q:"איך היית נלחם בנבל?",
+answers:[
+["זורק שקיות קטשופ","fire"],
+["להטביע את האויב מיונז עם קטשופ","ice"],
+["מועך את כולם במשקל כבד","lightning"]
+]
+}
+
+];
+
+
+/* =====================================================
+   משתני משחק
+   ===================================================== */
+
+let fire;
+let ice;
+let lightning;
+let step;
+
+
+/* =====================================================
+   התחלת משחק
+   ===================================================== */
+
+function startGame(){
+
+fire = 0;
+ice = 0;
+lightning = 0;
+
+step = 0;
+
+showQuestion();
+
+}
+
+
+/* =====================================================
+   הצגת שאלה
+   ===================================================== */
+
+function showQuestion(){
+
+let q = questions[step];
+
+let html = `
+<div id="question">${q.q}</div>
+`;
+
+for(let i=0;i<q.answers.length;i++){
+
+html += `
+<button class="answer"
+onclick="choose('${q.answers[i][1]}')">
+${q.answers[i][0]}
+</button>
+`;
+
+}
+
+document.getElementById("game").innerHTML = html;
+
+}
+
+
+/* =====================================================
+   בחירת תשובה
+   ===================================================== */
+
+function choose(type){
+
+if(type=="fire"){
+fire++;
+}
+
+if(type=="ice"){
+ice++;
+}
+
+if(type=="lightning"){
+lightning++;
+}
+
+step++;
+
+if(step < questions.length){
+
+showQuestion();
+
+}
+else{
+
+showResult();
+
+}
+
+}
+
+
+/* =====================================================
+   הצגת תוצאה
+   ===================================================== */
+
+function showResult(){
+
+let winner = "fire";
+
+if(ice > fire && ice > lightning){
+winner = "ice";
+}
+
+if(lightning > fire && lightning > ice){
+winner = "lightning";
+}
+
+let hero = heroes[winner];
+
+document.getElementById("game").innerHTML =
+
+`
+<h2>🎉 הגיבור שאתה הוא:</h2>
+
+<h1>${hero.name}</h1>
+
+<img class="heroImage"
+src="${hero.image}">
+
+<h3>${hero.description}</h3>
+
+<h2>הכוחות שלך</h2>
+
+<div class="powerImages">
+
+<img src="${hero.power1}">
+
+<img src="${hero.power2}">
+
+</div>
+
+<button class="restart"
+onclick="startGame()">
+🔄 חזרה להתחלה
+</button>
+`;
+
+}
+
+
+/* =====================================================
+   התחלת המשחק בעת פתיחת הדף
+   ===================================================== */
+
+startGame();
+
+</script>
+
+</body>
+</html>
